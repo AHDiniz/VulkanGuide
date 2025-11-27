@@ -1,3 +1,5 @@
+require "ecc"
+
 workspace "VulkanGuide"
 configurations { "Debug", "Release", "Distribution" }
 architecture "x64"
@@ -9,7 +11,9 @@ cppdialect "C++20"
 
 targetname "VulkanGuide"
 
-files { "source/**.cpp", "source/*.cpp", "include/**.h" }
+files { "source/**.cpp", "source/*.cpp", "include/**.h", "include/*.h" }
+
+pchheader "include/pch.h"
 
 includedirs {
     "../vendor/sdl3/include",
@@ -29,11 +33,6 @@ optimize "On"
 
 filter "system:windows"
 defines { "PLATFORM_WINDOWS" }
-libdirs { "../vendor/sdl3/bin/windows/x64" }
-linkoptions { "-lutilities -lSDL3 -mwindows" }
-postbuildcommands {
-    "cp %[../vendor/sdl3/bin/windows/x64/SDL3.dll] %[bin/%{cfg.buildcfg}/%{cfg.system}/%{cfg.architecture}/SDL3.dll]"
-}
 
 filter "system:unix"
 defines { "PLATFORM_UNIX" }

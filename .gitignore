@@ -1,6 +1,10 @@
 .zed/
+.cache/
 bin/
 obj/
+.clangd
 premake5
 premake5.exe
 *Makefile
+*.make
+compile_commands.json
