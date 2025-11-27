@@ -1,0 +1,6 @@
+.zed/
+bin/
+obj/
+premake5
+premake5.exe
+*Makefile
