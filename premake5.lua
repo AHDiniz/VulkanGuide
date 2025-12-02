@@ -2,11 +2,12 @@ require "ecc"
 
 workspace "VulkanGuide"
 configurations { "Debug", "Release", "Distribution" }
+platforms { "Windows", "Unix", "Mac" }
 architecture "x64"
+toolset "gcc"
 
 project "VulkanGuide"
 kind "ConsoleApp"
-platforms { "Windows", "Linux", "Mac" }
 language "C++"
 cppdialect "C++20"
 
@@ -22,15 +23,12 @@ files {
     "include/*.h"
 }
 
-pchheader "include/pch.h"
-
 includedirs {
     "include",
     "vendor/imgui",
     "vendor/imgui/backends",
     "vendor/imgui/misc",
     "vendor/sdl3/include",
-    "vendor/sdl3/include/SDL",
     "vendor/stb",
     "vendor/glm",
     "vendor/imgui",
@@ -54,10 +52,12 @@ filter "configurations:Distribution"
 defines { "CONFIGURATION_DISTRIBUTION" }
 optimize "On"
 
-filter "system:Windows"
+filter "platforms:Windows"
+system "windows"
 defines { "PLATFORM_WINDOWS" }
 
-filter "system:Linux"
+filter "platforms:Unix"
+system "linux"
 defines { "PLATFORM_LINUX" }
 libdirs {
     "vendor/sdl3/build",
@@ -65,11 +65,11 @@ libdirs {
     "vendor/tinyobjloader/build",
     "vendor/vk-bootstrap/build",
 }
-linkoptions "-lSDL3 -lglm -ltinyobjloader -lvk-bootstrap -lvulkan"
+linkoptions "`pkg-config --libs sdl3 vulkan` -lglm -ltinyobjloader -lvk-bootstrap"
 prebuildcommands {
-    "echo prebuildcommands\n",
-    "cp vendor/sdl3/build/libSDL3.so bin/%{cfg.buildcfg}/%{cfg.system}/%{cfg.architecture}/libSDL3.so"
+    "cp vendor/sdl3/build/libSDL3.so bin/%{cfg.buildcfg}/%{cfg.system}/%{cfg.architecture}/libSDL3.so",
 }
 
-filter "system:Mac"
-defines { "PLATFORM_MAC" }
+filter "platforms:Mac"
+system "macosx"
+defines { "PLATFORM_MACOSX" }

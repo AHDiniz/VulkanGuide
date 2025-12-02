@@ -1,5 +1,7 @@
 .zed/
 .cache/
+.codelite/
+.ctagsd/
 bin/
 obj/
 .clangd
@@ -7,4 +9,7 @@ premake5
 premake5.exe
 *Makefile
 *.make
+*.mk
+*.project
+*.workspace
 compile_commands.json
